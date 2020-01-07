@@ -1,0 +1,13 @@
+
+const CURRENCY = 'PHP';
+const COMMISSION_FEE_RATE = ''
+const STRIPE_ERROR_TYPES = '';
+const STRIPE_KEY = '';
+
+
+export {
+  CURRENCY,
+  COMMISSION_FEE_RATE,
+  STRIPE_ERROR_TYPES,
+  STRIPE_KEY
+};

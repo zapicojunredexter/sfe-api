@@ -1,5 +1,7 @@
+const admin = require('firebase-admin');
 const {statusCodes,buildResponse} = require('../models/Response');
-const Route = require('./model');
+const stripe = require('../../services/stripe.service');
+const {getCollection: OrderCollection} = require('./model');
 
 exports.fetch = (req, res) => {
     try {
@@ -19,6 +21,28 @@ exports.fetchAll = async (req, res) => {
 
 exports.add = async (req, res) => {
     try {
+        const { body } = req;
+        const { token } = body;
+        const chargeable = 100;
+
+        const orderDoc = OrderCollection().doc();
+        
+        const charge = await stripe.charges.create({
+            amount: chargeable,
+            currency: CURRENCY,
+            source: token,
+            metadata: {
+              orderId: orderDoc.id,
+            },
+        });
+
+        const order = {
+            charge,
+            createdAtMs: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAtMs: admin.firestore.FieldValue.serverTimestamp(),
+            deleted: false,
+        };
+        await orderDoc.create(order);
         return res.status(statusCodes.OK).send(null);
     } catch (error) {
         return res.status(statusCodes.INTERNAL_SERVER_ERROR).send(buildResponse('server_error', error));
