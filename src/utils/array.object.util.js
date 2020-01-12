@@ -1,6 +1,8 @@
-exports.arrayToObject = (array, key) =>
-    array.reduce((acc, curr) => {
-        acc[curr[key]] = curr;
+const arrayToObject = (array, key) => array.reduce((acc, curr) => {
+  acc[curr[key]] = curr;
+  return acc;
+}, {});
 
-        return acc;
-    },{});
+module.exports = {
+  arrayToObject,
+};

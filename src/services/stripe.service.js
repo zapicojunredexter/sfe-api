@@ -1,6 +1,8 @@
-import Stripe from 'stripe';
-import { STRIPE_KEY } from '../config/config';
+const Stripe = require('stripe');
+const { STRIPE_KEY } = require('../config/config');
 
 const stripe = Stripe(STRIPE_KEY);
 
-export default stripe;
+module.exports = {
+  stripe,
+};
